@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration>
+	<!-- If you want to allow dynamic log level changes via adminConsole, enable LogConditionTurboFilter. (Available from ver.3.0.16) -->
+	<!-- 
+ 	<turboFilter class="org.iplass.mtp.impl.logging.logback.LogConditionTurboFilter" />
+	 -->
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %X{tenant} %X{user} %X{command} %X{taskId} %logger{36} - %replace(%msg){'\r|\n', ' '}%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE_FATAL" class="ch.qos.logback.core.FileAppender">
+		<file>/logs/app_fatal_error.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %X{tenant} %X{user} %X{command} %X{taskId} %logger{36} - %replace(%msg){'\r|\n', ' '}%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE_PER_TENANT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<!-- in the absence of the class attribute, it is assumed that the desired
+			discriminator type is ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+		<discriminator>
+			<key>tenant</key>
+			<defaultValue>unknown</defaultValue>
+		</discriminator>
+		<timeout>36500 days</timeout>
+		<sift>
+			<appender name="FILE_PER_TENANT-${tenant}"
+				class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<encoder>
+					<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %X{tenant} %X{user} %X{command} %X{taskId} %logger{36} - %replace(%msg){'\r|\n', ' '}%n</pattern>
+				</encoder>
+				<file>/logs/${tenant}/app.log</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<FileNamePattern>/logs/${tenant}/app.log.%d{yyyy-MM-dd}
+					</FileNamePattern>
+					<maxHistory>366</maxHistory>
+				</rollingPolicy>
+			</appender>
+		</sift>
+	</appender>
+
+	<logger name="mtp.fatal" level="ERROR">
+<!--
+		<appender-ref ref="FILE_FATAL" />
+-->
+	</logger>
+
+	<logger name="org.iplass" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+<!--
+		<appender-ref ref="FILE_PER_TENANT" />
+-->
+	</logger>
+	
+	<logger name="mtp" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+<!--
+		<appender-ref ref="FILE_PER_TENANT" />
+-->
+	</logger>
+	<root level="OFF" />
+</configuration>
+
