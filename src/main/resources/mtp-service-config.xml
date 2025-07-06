@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE serviceDefinition>
 <serviceDefinition>
-	<inherits>/mtp-core-service-config-oracle.xml</inherits>
+<!-- 	<inherits>/mtp-core-service-config-oracle.xml</inherits> -->
 	<!-- If use mysql, inherits mtp-core-service-config-mysql.xml for convenience. -->
-	<!--
 	<inherits>/mtp-core-service-config-mysql.xml</inherits>
-	-->
 	<!-- If use postgresql, inherits mtp-core-service-config-postgre.xml for convenience. -->
 	<!--
 	<inherits>/mtp-core-service-config-postgre.xml</inherits>
@@ -122,18 +120,16 @@
 
 		<!-- ■ your rdb setting 1 ■ -->
 		<!-- for oracle -->
-		<property name="url" value="jdbc:oracle:thin:ADDRESS:PORT:DB" />
-		<property name="user" value="XXXXX" />
-		<property name="password" value="XXXXX" />
-		<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+<!-- 		<property name="url" value="jdbc:oracle:thin:ADDRESS:PORT:DB" /> -->
+<!-- 		<property name="user" value="XXXXX" /> -->
+<!-- 		<property name="password" value="XXXXX" /> -->
+<!-- 		<property name="driver" value="oracle.jdbc.driver.OracleDriver" /> -->
 
 		<!-- for mysql -->
-		<!--
-		<property name="url" value="jdbc:mysql://ADDRESS:PORT/DB" />
-		<property name="user" value="XXXXX" />
-		<property name="password" value="XXXXX" />
+		<property name="url" value="jdbc:mysql://localhost:3306/mtdb" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
 		<property name="driver" value="com.mysql.cj.jdbc.Driver" />
-		-->
 
 		<!-- for postgresql -->
 		<!--
@@ -197,9 +193,7 @@
 		 -->
 
 		<!-- ■ your app command list class (additional="true) ■ -->
-		<!--
-		<property name="annotatedClass" value="xxx.command.CommandList" additional="true" />
-		 -->
+		<property name="annotatedClass" value="org.iplass.tutorial.CommandList" additional="true" />
 
 		<!-- ■ your tenantLocalStore ■ -->
 		<!--
@@ -293,14 +287,12 @@
 			※下記設定は、Binaryはファイル、LongTextはRDBに保存する設定です。
 			　　LongTextもファイルにする場合は、longTextStoreの設定もFileLobStoreにしてください。
 		 -->
-		<!--
 		<property name="binaryStore" class="org.iplass.mtp.impl.lob.lobstore.file.FileLobStore">
-			<property name="rootDir" value="[setYourBinaryFileStoreRootPath]" />
+			<property name="rootDir" value="C:\iPLAss\binary" />
 			<property name="overwriteFile" value="false" />
 		</property>
 		<property name="longTextStore" class="org.iplass.mtp.impl.lob.lobstore.rdb.RdbLobStore">
 		</property>
-		 -->
 
 		<!--
 			LobサイズをRdb(lob_store)で管理するかを指定します。
@@ -422,9 +414,7 @@
 
 		<!-- ■ for develop only (additional="true) ■ -->
 		<!-- 送信メールをデバッグ出力する場合、以下を有効にしてください。 -->
-		<!--
 		<property name="listener" class="org.iplass.mtp.mail.listeners.LoggingSendMailListener" additional="true"/>
-		-->
 	</service>
 
 	<!-- Full Text Search SErvice Settings -->
